@@ -13,13 +13,13 @@ public class Application extends android.app.Application {
     super.onCreate();
 
 
-  Parse.initialize(this, "95IB9VOnaYSWQ87Zlms0qskdgpHEAUETwONznigQ", "l58gzWaqPFFVbVdE8o4SFGrayzxs8kCOgTOARZN2");
+  Parse.initialize(this, "g0p79lQxI51ZETZtwKTCZuqjf1YyxQUZn8Qy1kQb", "tUKgzMsZ09LbLIIdwSZyIH1PVcu24aEcMpxcWH4A");
   ParseInstallation.getCurrentInstallation().saveInBackground();
 
     ParseInstallation installation = ParseInstallation.getCurrentInstallation();
     installation.put("device_id", "1234567890");
-    installation.saveInBackground();    installation.put("device_id", "1234567890");
     installation.saveInBackground();
+
 }
 
   }
