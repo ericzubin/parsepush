@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ListView;
 import com.parse.FindCallback;
 import com.parse.ParseInstallation;
@@ -24,15 +26,23 @@ import java.util.List;
 //
 public class usuarios extends Activity {
     private ListView list_usuarios;
+    private GridView GD;
+    private ArrayList<Personas> personas;
+    //private ArrayList<Animal> animales;
     ParseQuery userQuery = ParseUser.getQuery();
     //private String[] colores;
     final ArrayList usuario = new ArrayList();
+
+
+
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.usuarios);
-        ListView lv = (ListView) findViewById(R.id.listView);
+
+        GridView GD = (GridView) findViewById(R.id.gridview);
         new LoadAllProducts().execute();
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        GD.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 enviar(usuario.get(position).toString());
@@ -143,6 +153,7 @@ public class usuarios extends Activity {
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             query.whereDoesNotExist("tUKgzMsZ09LbLIIdwSZyIH1PVcu24aEcMpxcWH4A");
             query.findInBackground(new FindCallback<ParseUser>() {
+
                 @Override
                 public void done(List<ParseUser> list, com.parse.ParseException e) {
                     if (e == null) {
@@ -150,6 +161,9 @@ public class usuarios extends Activity {
                         for (int p = 0; p < list.size(); p++) {
                             // Log.d("usuario", list.get(p).getUsername().toString());
                             usuario.add(list.get(p).getUsername().toString());
+                            String jo=list.get(p).getUsername().toString();
+                            Personas agrerandoPersonas=new Personas(R.mipmap.ic_launcher,jo);
+                            personas.add(p,agrerandoPersonas);
                         }
                         Log.d("tamaño ", String.valueOf(list.size()));
 
@@ -178,9 +192,10 @@ public class usuarios extends Activity {
 
 
                     ArrayAdapter<String> adapter;
-                    adapter=new ArrayAdapter<String>(usuarios.this,android.R.layout.simple_list_item_1,usuario);
-                    ListView lv= (ListView) findViewById(R.id.listView);
-                    lv.setAdapter(adapter);
+                    adapter=new ArrayAdapter<String>(usuarios.this,R.layout.list_item,usuario);
+
+                    GridView GD= (GridView) findViewById(R.id.gridview);
+                    GD.setAdapter(adapter);
 
 
 
