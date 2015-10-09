@@ -1,14 +1,15 @@
 package com.parsepush.conrads.parsepush;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ListView;
 import com.parse.FindCallback;
@@ -26,13 +27,13 @@ import java.util.List;
 public class usuarios extends Activity {
     private ListView list_usuarios;
     private GridView GD;
-    private ArrayList<Personas> personass=new ArrayList<Personas>();
+    private ArrayList<Personas> personas;
     //private ArrayList<Animal> animales;
-    ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
+    ParseQuery userQuery = ParseUser.getQuery();
     //private String[] colores;
-    //final ArrayList usuario = new ArrayList();
+    final ArrayList usuario = new ArrayList();
 
-    Context c=this;
+
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -44,7 +45,7 @@ public class usuarios extends Activity {
         GD.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                enviar(personass.get(position).getNombre());
+                enviar(usuario.get(position).toString());
 
             }
         });
@@ -115,7 +116,7 @@ public class usuarios extends Activity {
 
 
         // Find devices associated with these users
-        ParseQuery<ParseInstallation> pushQuery = ParseInstallation.getQuery();
+        ParseQuery pushQuery = ParseInstallation.getQuery();
         pushQuery.whereMatchesQuery("Usuarios", userQuery);
 
 
@@ -159,9 +160,10 @@ public class usuarios extends Activity {
                         // The query was successful.
                         for (int p = 0; p < list.size(); p++) {
                             // Log.d("usuario", list.get(p).getUsername().toString());
-                            //usuario.add(list.get(p).getUsername().toString());
-                            personass.add(new Personas(R.mipmap.ic_launcher,list.get(p).getUsername().toString()));
-                            Log.d("Nombre ", personass.get(p).getNombre());
+                            usuario.add(list.get(p).getUsername().toString());
+                            String jo=list.get(p).getUsername().toString();
+                            Personas agrerandoPersonas=new Personas(R.mipmap.ic_launcher,jo);
+                            personas.add(p,agrerandoPersonas);
                         }
                         Log.d("tamaño ", String.valueOf(list.size()));
 
@@ -189,8 +191,8 @@ public class usuarios extends Activity {
 
 
 
-                    PersonasAdapter adapter = new PersonasAdapter(c,personass);
-                    //adapter = new AnimalesAdapter(this, animales);
+                    ArrayAdapter<String> adapter;
+                    adapter=new ArrayAdapter<String>(usuarios.this,R.layout.list_item,usuario);
 
                     GridView GD= (GridView) findViewById(R.id.gridview);
                     GD.setAdapter(adapter);
